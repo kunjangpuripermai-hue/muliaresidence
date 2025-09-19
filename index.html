@@ -156,9 +156,13 @@
 </div>
 </div>
 
-<div class="fixed bottom-4 right-4 p-2 bg-white rounded-full shadow-lg z-50">
-  <p class="text-xs font-semibold text-center mb-1">Putar Musik</p>
-  <audio controls loop>
+<!-- Music Player - Hidden initially -->
+<div id="audioPlayerContainer" class="fixed bottom-4 right-4 z-50 hidden">
+  <button id="audioControlBtn" class="bg-white text-black p-3 rounded-full shadow-lg border border-gray-200">
+    <svg id="playIcon" class="w-6 h-6 text-gray-800" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"></path></svg>
+    <svg id="pauseIcon" class="w-6 h-6 text-gray-800 hidden" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zM7 8a1 1 0 012 0v4a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v4a1 1 0 102 0V8a1 1 0 00-1-1z" clip-rule="evenodd"></path></svg>
+  </button>
+  <audio id="invitationAudio" loop>
     <!-- Ganti 'musik_undangan.mp3' dengan nama file musik Anda -->
     <source src="musik_undangan.mp3" type="audio/mpeg">
     Browser Anda tidak mendukung elemen audio.
@@ -169,6 +173,11 @@
     const coverSection = document.getElementById('coverSection');
     const mainInvitation = document.getElementById('mainInvitation');
     const openInvitationBtn = document.getElementById('openInvitationBtn');
+    const audioPlayerContainer = document.getElementById('audioPlayerContainer');
+    const audioControlBtn = document.getElementById('audioControlBtn');
+    const invitationAudio = document.getElementById('invitationAudio');
+    const playIcon = document.getElementById('playIcon');
+    const pauseIcon = document.getElementById('pauseIcon');
 
     const daysSpan = document.getElementById('days');
     const hoursSpan = document.getElementById('hours');
@@ -209,6 +218,22 @@
     openInvitationBtn.addEventListener('click', () => {
       coverSection.classList.add('hidden');
       mainInvitation.classList.remove('hidden');
+      audioPlayerContainer.classList.remove('hidden');
+      invitationAudio.play().catch(error => console.error("Autoplay was prevented:", error));
+      playIcon.classList.add('hidden');
+      pauseIcon.classList.remove('hidden');
+    });
+
+    audioControlBtn.addEventListener('click', () => {
+      if (invitationAudio.paused) {
+        invitationAudio.play();
+        playIcon.classList.add('hidden');
+        pauseIcon.classList.remove('hidden');
+      } else {
+        invitationAudio.pause();
+        playIcon.classList.remove('hidden');
+        pauseIcon.classList.add('hidden');
+      }
     });
   </script>
 </body>
